@@ -144,7 +144,10 @@ func process_chains() {
 				})
 				// Т.к. положительная бесконечность это тоже значение, берем все пары, но оставляем только одну, без бесконечностей
 				// TODO: ужасный кусок кода, надо переделать
-				for _, po := range chains {
+				for i, po := range chains {
+                    if i == 0 {
+                        logger.Println(po.Description);
+                    }
 					if po.Profit >= 0.1 && po.Fits && !math.IsInf(po.Profit, 0) {
 						/*
 							Если пара подходит по объемам и профит больше, чем 0.1%,
