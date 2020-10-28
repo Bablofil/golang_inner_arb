@@ -34,12 +34,15 @@ func ws_listener(wg *sync.WaitGroup) {
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
 
-	pairs := "/ws/"
+	//pairs := "/ws/"
+	pairs := []string{}
 	for _, v := range exchangeInfo.Symbols {
-		pairs = pairs + strings.ToLower(v.Symbol) + "@depth/"
+		//pairs = pairs + strings.ToLower(v.Symbol) + "@depth/"
+		pairs = append(pairs, strings.ToLower(v.Symbol))
 	}
 
-	u := url.URL{Scheme: "wss", Host: *addr, Path: pairs}
+	//u := url.URL{Scheme: "wss", Host: *addr, Path: pairs}
+	u := url.URL{Scheme: "wss", Host: *addr, Path: "/ws/" + strings.Join(pairs, "/")}
 
 	c, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
 	if err != nil {
@@ -114,12 +117,12 @@ func orders_listener(wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	flag.Parse()
-	logger.SetFlags(0)
+	logger.SetFlags(-1)
 
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
 
-	params := "/ws/" + listen_key
+	params := "/ws/" + listen_key 
 
 	u := url.URL{Scheme: "wss", Host: *addr, Path: params}
 

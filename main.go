@@ -60,6 +60,7 @@ func main() {
 	logger = log.New(mw, "", -1)
 	logger.SetFlags(-1)
 
+	logger.Println("started")
 	// Инициализация начальных объектов
 	symbols = make(map[string]*SymbolObj)
 	orders = make(map[int64]OrderInfo)
